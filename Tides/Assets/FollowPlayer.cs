@@ -8,21 +8,23 @@ public class FollowPlayer : MonoBehaviour
     // Component that stores the location of the player
     public Transform Player;
     public Transform tf;
-    private int offset = 5; 
+    private Vector3 velocity = Vector2.zero;
+    public float SmoothTime = 0.3f;
+    private Vector3 offset; 
 
 
     // Start is called before the first frame update
     void Start()
     {
         tf = GetComponent<Transform>();
+        offset = Player.transform.position - tf.transform.position;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(Player.transform.position.magnitude - tf.transform.position.magnitude >= offset)
-        {
-
-        }
+        Vector3 targetPosition = Player.position + offset; 
+        transform.position = Vector3.SmoothDamp(tf.position, targetPosition, ref velocity, SmoothTime);
+        
     }
 }
